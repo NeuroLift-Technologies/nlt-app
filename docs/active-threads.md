@@ -1,0 +1,84 @@
+# Active Threads — neurolift-ai-fusion
+
+**Governance:** ORG-DEV-OTOI-1.0.0
+**Last updated:** 2026-08-22
+**Maintained by:** All active agents (update at session start and end)
+
+---
+
+## How to Use This File
+
+- **Before starting work:** Read this file to identify active threads, avoid conflicts, and find relevant context.
+- **When starting a thread:** Add an entry to the Active Threads table with your name and session ID.
+- **When completing a thread:** Move it to the Completed Threads section and write a handoff record in `docs/agent-log/handoffs/`.
+
+---
+
+## Active Threads
+
+| Thread ID | Title | Owner | Agent | Branch | Status | Started |
+|-----------|-------|-------|-------|--------|--------|---------|
+| TH-008 | Document PR #43 Cloudflare workspace/config changes | Automation | Cursor Automation | cursor/documentation-automation-system-99aa | 🟡 In Progress | 2026-05-02 |
+
+
+---
+
+## Blocked Threads
+
+_No blocked threads at this time._
+
+---
+
+## Completed Threads
+
+| Thread ID | Title | Completed By | Completed Date | Handoff |
+|-----------|-------|-------------|----------------|---------|
+| TH-001 | Add required governance files (AGENTS.md, CLAUDE.md, active-threads.md, agent-log dirs) | GitHub Copilot | 2026-04-21 | Merged via [PR #17](https://github.com/NeuroLift-Technologies/neurolift-ai-fusion/pull/17) |
+| TH-002 | Prepare Cloudflare World Engine deployment | Joshua W. Dorsey, Sr. | Codex | — | ✅ Complete | 2026-04-25 |
+| TH-003 | Repo cleanup + full-stack app foundation (web/mobile/api) | Codex | 2026-04-25 | `docs/agent-log/handoffs/CODEX-2026-04-25-repo-cleanup-fullstack-foundation-handoff.json` |
+| TH-004 | PR feedback response: implement runnable API/web/mobile starters + archive legacy business-agent tree | Codex | 2026-04-25 | `docs/agent-log/handoffs/CODEX-2026-04-25-pr-feedback-fullstack-implementation-handoff.json` |
+| TH-005 | Document PR #30 full-stack simulation app foundation | Cursor Automation | 2026-04-30 | `docs/agent-log/handoffs/CURSOR-2026-04-30-doc-automation-pr30-handoff.json` |
+| TH-006 | Sync Simulation Lab milestone onto current main | Codex | 2026-05-01 | `docs/agent-log/handoffs/2026-05-01-codex-main-sync-simulation-lab-handoff.json` |
+| TH-007 | Open-items review report for next agent | GitHub Copilot | 2026-05-02 | `docs/reviews/2026-05-02-copilot-open-items-review.md` |
+| TH-008 | Document PR #51 CI harness and PGSA gate | Cursor GPT-5.5 | 2026-05-04 | `docs/agent-log/handoffs/CURSOR-2026-05-04-doc-automation-pr51-handoff.json` |
+| TH-009 | PR queue cleanup scan (14 PRs, 4 orphan branches) | Copilot (PR Cleanup Agent) | 2026-05-02 | `docs/agent-log/handoffs/2026-05-02-copilot-pr-cleanup-scan-handoff.json` |
+| TH-010 | Documentation automation for PR #49 governance cleanup context | Cursor GPT-5.5 | 2026-05-22 | `docs/agent-log/handoffs/CURSOR-2026-05-22-doc-automation-pr49-handoff.json` |
+| TH-011 | Stand up World Engine frontend prototype ([PR #69](https://github.com/NeuroLift-Technologies/neurolift-ai-fusion/pull/69)) | Claude Code | 2026-05-26 | `docs/agent-log/handoffs/CLAUDE-2026-05-26-world-engine-frontend-prototype-handoff.json` |
+| TH-012 | Make World Engine browser prototype run locally | Codex | 2026-05-27 | `docs/agent-log/handoffs/CODEX-2026-05-27-world-engine-working-prototype-handoff.json` |
+| TH-013 | Align session and onboarding to repository governance | Antigravity | 2026-05-27 | `docs/agent-log/handoffs/2026-05-27-ANTIGRAVITY-governance-alignment.json` |
+| TH-014 | Restore org-level governance framing + un-archive root governance files (supersedes PR #75) | Claude Code | 2026-05-28 | `docs/agent-log/2026-05-28-claude-governance-restoration.md` |
+| TH-015 | Document PR #76 governance restoration workflow follow-up | Cursor GPT-5.5 | 2026-05-28 | `docs/agent-log/handoffs/CURSOR-AUTOMATION-2026-05-28-pr76-docs-handoff.json` |
+| TH-016 | Create an interactive visualization of the 19 Avatar-Aide pairs | Zed GPT-5.6 Sol | 2026-08-20 | `docs/agent-log/handoffs/ZED-GPT-5.6-SOL-2026-08-20-avatar-aide-visualization-handoff.json` |
+| TH-017 | Restore missing web lib modules and clear current diagnostics | Zed GPT-5.6 Sol | 2026-08-20 | `docs/agent-log/handoffs/ZED-GPT-5.6-SOL-2026-08-20-web-lib-repair-and-diagnostics-handoff.json` |
+| TH-018 | Web validation follow-up + /pairs src/app route re-export fix | Zed GPT-5.6 Sol | 2026-08-20 | `docs/agent-log/handoffs/ZED-GPT-5.6-SOL-2026-08-20-web-validation-followup-handoff.json` |
+| TH-019 | Remove Next.js inferred workspace-root warning via outputFileTracingRoot | Zed GPT-5.6 Sol | 2026-08-20 | `docs/agent-log/handoffs/ZED-GPT-5.6-SOL-2026-08-20-next-output-file-tracing-root-handoff.json` |
+| TH-020 | Fix failed CI: shared-ci.yml references non-existent reusable workflows; web.yml/mobile.yml trigger on master instead of main | Toast (polecat) | 2026-08-22 | `docs/agent-log/handoffs/TOAST-2026-08-22-fix-failed-beads-ci.yml` |
+| — | PR Cleanup Agent setup | GitHub Copilot | — | `docs/handoffs/handoff_copilot_pr_cleanup_agent.json` |
+| — | WorldEngine EventBus integration | GitHub Copilot (via Claude Code) | — | `docs/handoffs/handoff_copilot_world_engine.json` |
+| — | ADHD research and scenario generation | Gemini / Advisory | — | `docs/handoffs/handoff_advisory_adhd_research.json` |
+| — | Avatar cursor remaining traits | Cursor | — | `docs/handoffs/handoff_cursor_remaining_traits.json` |
+| — | Fusion validation advisory | Advisory | — | `docs/handoffs/handoff_advisory_fusion_validation.json` |
+| — | Codex AIDE expertise | Codex | — | `docs/handoffs/handoff_codex_aide_expertise.json` |
+
+---
+
+## Thread Conventions
+
+- **Thread ID format:** `TH-NNN` (sequential, padded to 3 digits)
+- **Status values:** 🟢 Open · 🟡 In Progress · 🔴 Blocked · ✅ Complete
+- **Owner:** Human stakeholder who requested the work
+- **Agent:** AI agent or platform currently working the thread
+- **Branch:** Git branch associated with the thread (if applicable)
+
+---
+
+## Notes for Next Agent
+
+- Governance stub files (`AGENTS.md`, `CLAUDE.md`, `docs/active-threads.md`, `docs/agent-log/`) were merged in TH-001 (PR #17).
+- Governance source-of-truth is synced via `.github/workflows/sync-governance-public.yml`; validate that `NLT-DEV-OTOI.md` exists in the repository root when onboarding.
+- The `docs/handoffs/` directory contains legacy handoff records in an older format. New handoff records should go to `docs/agent-log/handoffs/` using the `handoff-record.json` schema from SOP-NLT-001.
+- No active blockers. No architectural decisions pending.
+- TH-016 through TH-019 (Zed GPT-5.6 Sol): Initial visualization work and web lib repairs completed by Z.A.I; final integration (full home page composition, ThemeProvider/Toaster layout merge, build verification) completed by Poolside Agent on 2026-08-20. All threads moved to Completed status. See handoff: `docs/agent-log/handoffs/POOLSSIDE-2026-08-20-avatar-aide-integration-handoff.json`.
+- TH-006 preserved the pre-sync local work on `codex-cli/local-simulation-lab-before-main-sync`, fast-forwarded `main` to `origin/main`, and ported the fixture-driven `/simulation-lab` observer route into the current Next.js web app.
+  - TH-007 produced a full open-items review report at `docs/reviews/2026-05-02-copilot-open-items-review.md` covering all open PRs, unresolved review comments, blockers, and pending decisions as of 2026-05-02.
+  - TH-020 (2026-08-22): Fixed failing CI workflows. `shared-ci.yml` called three reusable workflows that no longer exist in `.github-private` (python-lint.yml, python-test.yml, security-scan.yml), causing every push/PR to fail since ~May 2026. Rewrote with local lint/test/security jobs. Also fixed `web.yml` and `mobile.yml` which triggered on `master` instead of `main`. Updated `python-app.yml` to cover `backend/` changes. Fixed F824 lint error in `backend/app/routers/world.py`. PR #96.

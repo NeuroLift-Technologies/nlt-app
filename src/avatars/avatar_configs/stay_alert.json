@@ -1,0 +1,45 @@
+{
+  "avatar_id": "stay_alert_001",
+  "trait_name": "sustained_attention_deficit",
+  "description": "Avatar with sustained attention deficit - struggles to maintain focus on tasks, especially those that are repetitive or not immediately engaging",
+  "trait_config": {
+    "attention_span_base": 5.0,
+    "attention_span_variance": 2.0,
+    "distraction_sensitivity": 0.8,
+    "task_engagement_threshold": 0.6,
+    "focus_recovery_time": 30.0,
+    "hyperfocus_probability": 0.1,
+    "hyperfocus_duration": 120.0
+  },
+  "initial_state": {
+    "emotional_state": "neutral",
+    "cognitive_load": 0.3,
+    "stress_level": 0.2,
+    "current_focus": 0.7,
+    "distraction_level": 0.3
+  },
+  "difficulty_level": 0.7,
+  "learning_rate": 0.6,
+  "burnout_threshold": 0.8,
+  "struggle_patterns": [
+    "loses_focus_during_repetitive_tasks",
+    "gets_distracted_by_environmental_stimuli",
+    "struggles_with_sustained_mental_effort",
+    "has_difficulty_returning_to_task_after_interruption",
+    "experiences_mental_fatigue_quickly"
+  ],
+  "success_indicators": [
+    "maintains_focus_for_extended_periods",
+    "successfully_ignores_distractions",
+    "completes_tasks_without_losing_attention",
+    "recovers_focus_quickly_after_interruption",
+    "demonstrates_improved_attention_endurance"
+  ],
+  "learning_objectives": [
+    "develop_sustained_attention_skills",
+    "learn_distraction_management_techniques",
+    "build_mental_endurance",
+    "improve_task_engagement_strategies",
+    "master_focus_recovery_methods"
+  ]
+}

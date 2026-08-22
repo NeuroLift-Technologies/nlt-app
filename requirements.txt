@@ -1,0 +1,57 @@
+# NeuroLift Technologies Simulation Environment
+# Core dependencies
+
+# Core Python packages
+pydantic>=2.0.0
+typing-extensions>=4.0.0
+dataclasses-json>=0.6.0
+
+# Configuration and data handling
+PyYAML>=6.0
+jsonschema>=4.0.0
+python-dotenv>=1.0.0
+
+# API
+fastapi>=0.115.0
+uvicorn>=0.30.0
+
+# Database
+supabase>=2.0.0
+
+# Testing framework
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.10.0
+pytest-xdist>=3.0.0  # Parallel testing
+
+# Development and code quality
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0
+mypy>=1.0.0
+pre-commit>=3.0.0
+
+# Logging and monitoring
+structlog>=23.0.0
+rich>=13.0.0  # Beautiful terminal output
+
+# Data processing and analysis
+numpy>=1.24.0
+pandas>=2.0.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Optional: AI/ML libraries (for future enhancements)
+# torch>=2.0.0
+# transformers>=4.30.0
+# scikit-learn>=1.3.0
+
+# Optional: Simulation and game engines
+# pygame>=2.5.0
+# panda3d>=1.10.0
+
+# Documentation
+sphinx>=7.0.0
+sphinx-rtd-theme>=1.3.0
+myst-parser>=2.0.0

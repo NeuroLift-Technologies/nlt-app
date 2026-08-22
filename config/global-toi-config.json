@@ -1,0 +1,105 @@
+{
+  "otoi": {
+    "version": "1.2.0",
+    "global_settings": {
+      "privacy": {
+        "data_retention": "ephemeral",
+        "override_rights": "human-controlled",
+        "context_window": "adaptive"
+      },
+      "agency": {
+        "task_initiation": "human-approved",
+        "interruptibility": "always",
+        "decision_authority": "advisory-only"
+      },
+      "cognitive_alignment": {
+        "scaffolding_style": "modular",
+        "threading": "parallel-preserving",
+        "context_sharing": "selective"
+      }
+    },
+    "human_oversight": {
+      "CEO": {
+        "approval_required": [
+          "strategic_decisions",
+          "financial_commitments_over_threshold",
+          "executive_recommendations",
+          "partnership_agreements",
+          "major_policy_changes"
+        ],
+        "notification_required": [
+          "all_agent_outputs",
+          "escalated_issues",
+          "performance_metrics"
+        ]
+      },
+      "COO": {
+        "approval_required": [
+          "operational_changes",
+          "resource_allocation",
+          "process_modifications",
+          "vendor_selection"
+        ],
+        "notification_required": [
+          "department_outputs",
+          "operational_metrics",
+          "escalation_events"
+        ]
+      }
+    },
+    "communication_protocol": {
+      "inter_agent_communication": {
+        "method": "message_queue",
+        "format": "structured_json",
+        "logging": "comprehensive",
+        "human_visibility": "full"
+      },
+      "escalation_protocol": {
+        "triggers": [
+          "conflicting_recommendations",
+          "decision_uncertainty",
+          "resource_conflicts",
+          "ethical_concerns",
+          "capability_limitations"
+        ],
+        "routing": {
+          "strategic": "CEO",
+          "operational": "COO",
+          "technical": "CTO_Agent",
+          "financial": "CFO_Agent",
+          "marketing": "CMO_Agent"
+        }
+      },
+      "context_sharing": {
+        "between_executives": "full",
+        "between_departments": "relevant_only",
+        "sub_agent_to_parent": "comprehensive",
+        "to_humans": "summarized_with_details_available"
+      }
+    },
+    "performance_monitoring": {
+      "metrics": [
+        "response_accuracy",
+        "task_completion_times",
+        "decision_quality",
+        "escalation_frequency",
+        "human_override_rates",
+        "output_quality",
+        "resource_utilization",
+        "collaboration_effectiveness"
+      ],
+      "reporting_frequency": {
+        "real_time": "critical_issues",
+        "daily": "performance_summary",
+        "weekly": "trend_analysis",
+        "monthly": "comprehensive_review"
+      }
+    },
+    "security_settings": {
+      "data_encryption": "enabled",
+      "access_control": "role_based",
+      "audit_logging": "comprehensive",
+      "privacy_protection": "maximum"
+    }
+  }
+}

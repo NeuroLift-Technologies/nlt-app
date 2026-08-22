@@ -1,0 +1,22 @@
+{
+  "name": "world-engine",
+  "private": true,
+  "packageManager": "npm@11.17.0",
+  "workspaces": [
+    "apps/web",
+    "apps/mobile"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:mobile": "npm run start --workspace=apps/mobile",
+    "build:web": "npm run build --workspace=apps/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.3",
+    "@cloudflare/workers-types": "^5.20260820.1",
+    "typescript": "^5.0.4",
+    "wrangler": "4.125.0"
+  }
+}

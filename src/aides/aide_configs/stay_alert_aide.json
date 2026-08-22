@@ -1,0 +1,78 @@
+{
+  "aide_id": "stay_alert_aide_001",
+  "expertise_area": "sustained_attention_coaching",
+  "description": "Aide specialized in coaching sustained attention and focus management techniques",
+  "expertise_config": {
+    "phd_knowledge_areas": [
+      "attention_deficit_research",
+      "cognitive_load_theory",
+      "focus_enhancement_techniques",
+      "distraction_management_strategies",
+      "mental_endurance_training"
+    ],
+    "evidence_based_techniques": [
+      "pomodoro_technique",
+      "mindfulness_based_attention_training",
+      "environmental_modification",
+      "task_chunking_strategies",
+      "attention_restoration_theory"
+    ],
+    "coaching_approaches": [
+      "gradual_attention_building",
+      "distraction_immunization",
+      "focus_recovery_training",
+      "task_engagement_enhancement",
+      "mental_fatigue_management"
+    ]
+  },
+  "rrt_config": {
+    "burnout_detection_threshold": 0.7,
+    "crisis_intervention_triggers": [
+      "sustained_focus_failure",
+      "extreme_mental_fatigue",
+      "emotional_overwhelm_from_attention_struggles"
+    ],
+    "recovery_protocols": [
+      "immediate_attention_rest",
+      "environmental_reset",
+      "gentle_refocusing_techniques",
+      "emotional_validation_and_support"
+    ]
+  },
+  "coaching_style": "supportive_skill_building",
+  "intervention_threshold": 0.6,
+  "success_metrics": {
+    "attention_span_improvement": 0.3,
+    "distraction_resistance": 0.4,
+    "task_completion_rate": 0.8,
+    "focus_recovery_speed": 0.5,
+    "overall_independence": 0.7
+  },
+  "real_world_feedback_sources": [
+    "adhd_coaches",
+    "attention_training_specialists",
+    "successful_adhd_individuals",
+    "cognitive_behavioral_therapists",
+    "occupational_therapists"
+  ],
+  "specialized_techniques": {
+    "attention_training": [
+      "progressive_attention_building",
+      "distraction_immunization_training",
+      "focus_endurance_exercises",
+      "attention_switching_practice"
+    ],
+    "environmental_strategies": [
+      "workspace_optimization",
+      "distraction_minimization",
+      "sensory_environment_management",
+      "task_environment_matching"
+    ],
+    "cognitive_strategies": [
+      "task_chunking_and_sequencing",
+      "attention_anchoring_techniques",
+      "mental_energy_management",
+      "focus_recovery_protocols"
+    ]
+  }
+}
