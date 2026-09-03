@@ -1,4 +1,17 @@
-# NeuroLift AI Fusion
+# nlt-app — Personalized 1:20 Advocate Runtime (World >> Fusion >> App)
+
+**App Delivery Layer — 1 orchestrator : 20 advocates (20th = small Developer builder) — Pipeline: World Engine >> AI-Fusion >> App**
+
+> **Pipeline:** `World Engine >> AI-Fusion >> nlt-app`
+> - **World Engine** — World simulation & orchestration (upstream)
+> - **AI-Fusion** — Avatar-Aide-Advocate training & fusion (midstream)
+> - **nlt-app** — Personalized 1:20 Advocate Runtime — delivers 1 orchestrator + 20 advocates to the end user (downstream, this repo)
+
+```
+World Engine  ──>>  AI-Fusion  ──>>  nlt-app (1:20)
+   (world)            (training)      (delivery — 1 orchestrator : 20 advocates)
+                                          └─ 20th advocate = small Developer builder
+```
 
 **Full-Stack Avatar-Aide-Advocate Training Platform**
 

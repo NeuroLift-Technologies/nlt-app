@@ -3,14 +3,14 @@
 # Prints OTOI reading order and validates governance file presence at session start.
 # Informational only — always exits 0 so it never blocks the session.
 #
-# Governed by: ORG-DEV-OTOI-1.0.0
+# Governed by: ORG-DEV-OTOI-1.0.3
 # Authority:   Joshua W. Dorsey, Sr.
 # SOP:         SOP-NLT-002 (repo-governance-setup.md)
 
 set -uo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-OTOI_VERSION="${NLT_OTOI_VERSION:-ORG-DEV-OTOI-1.0.0}"
+OTOI_VERSION="${NLT_OTOI_VERSION:-ORG-DEV-OTOI-1.0.3}"
 AUTHORITY="${NLT_AUTHORITY:-Joshua W. Dorsey, Sr.}"
 ESCALATION="${NLT_ESCALATION_TARGET:-info@neuroliftsolutions.com}"
 
@@ -23,13 +23,14 @@ echo "================================================================"
 echo ""
 echo "Mandatory reading order:"
 echo "  1. NLT-DEV-OTOI.md         — canonical org-level coding agent contract"
-echo "  2. AGENTS.md               — internal coordination gateway"
-echo "  3. CLAUDE.md               — this repository's session directive"
-echo "  4. docs/active-threads.md  — current work state (do not duplicate threads)"
+echo "  2. REVIEW.md               — canonical agent review format"
+echo "  3. AGENTS.md               — internal coordination gateway"
+echo "  4. CLAUDE.md               — this repository's session directive"
+echo "  5. docs/active-threads.md  — current work state (do not duplicate threads)"
 echo ""
 echo "Required governance artifacts in this repo:"
 missing=0
-for f in NLT-DEV-OTOI.md AGENTS.md CLAUDE.md nltotoi.json; do
+for f in NLT-DEV-OTOI.md AGENTS.md REVIEW.md CLAUDE.md nltotoi.json; do
   if [[ -f "${REPO_ROOT}/${f}" ]]; then
     echo "  [OK]      ${f}"
   else

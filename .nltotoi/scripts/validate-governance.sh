@@ -79,10 +79,11 @@ check_file_age() {
     return 0
   fi
   local mtime now age_days
-  # Try BSD stat (-r flag), then GNU stat (-c flag).  If both fail, skip the
-  # check and emit a warning rather than silently misreporting the age.
-  mtime="$(date -r "${REPO_ROOT}/${file}" +%s 2>/dev/null \
-           || stat -c %Y "${REPO_ROOT}/${file}" 2>/dev/null)" || {
+  # Try GNU stat (-c), then BSD/macOS stat (-f), then date -r as a last resort.
+  # If all fail, skip the check and warn rather than misreporting the age.
+  mtime="$(stat -c %Y "${REPO_ROOT}/${file}" 2>/dev/null \
+           || stat -f %m "${REPO_ROOT}/${file}" 2>/dev/null \
+           || date -r "${REPO_ROOT}/${file}" +%s 2>/dev/null)" || {
     echo "  ⚠️  AGE CHECK SKIPPED (cannot read mtime): ${file}"
     ((WARN++)) || true
     return 0
@@ -114,6 +115,7 @@ echo "[ Required Files ]"
 required_files=(
   "NLT-DEV-OTOI.md"
   "AGENTS.md"
+  "REVIEW.md"
   "nltotoi.json"
   ".nltotoi/README.md"
   ".nltotoi/index/governance-files.md"
@@ -125,6 +127,7 @@ required_files=(
   "templates/escalation.md"
   "templates/intent-log.md"
   "templates/commit-message.md"
+  "templates/review-record.md"
   "ISSUE_TEMPLATE/agent-escalation.md"
   "ISSUE_TEMPLATE/governance-proposal.md"
   "PULL_REQUEST_TEMPLATE/agent-contribution.md"
@@ -132,6 +135,9 @@ required_files=(
   "SOPs/new-agent-onboarding.md"
   "SOPs/repo-governance-setup.md"
   "SOPs/incident-response.md"
+  ".claude/README.md"
+  ".claude/settings.json"
+  ".claude/hooks/session-start.sh"
 )
 
 for f in "${required_files[@]}"; do
@@ -142,15 +148,19 @@ echo ""
 
 # --- Content Checks ---
 echo "[ Content Validation ]"
-check_content "NLT-DEV-OTOI.md"  "ORG-DEV-OTOI-1.0.0"           "Document ID"
+check_content "NLT-DEV-OTOI.md"  "ORG-DEV-OTOI-1.0.3"           "Document ID"
 check_content "NLT-DEV-OTOI.md"  "Joshua W. Dorsey"              "Authority marker"
 check_content "NLT-DEV-OTOI.md"  "Solidarity Framework"          "Solidarity Framework reference"
 check_content "NLT-DEV-OTOI.md"  "HAIEF"                         "HAIEF reference"
+check_content "REVIEW.md"        "ORG-DEV-OTOI-1.0.3"             "OTOI version referenced in REVIEW.md"
+check_content "REVIEW.md"        "NLT-DEV-OTOI.md"               "OTOI reference in REVIEW.md"
 check_content "AGENTS.md"        "NLT-DEV-OTOI.md"               "OTOI reference in AGENTS.md"
-check_content "AGENTS.md"        "ORG-DEV-OTOI-1.0.0"            "Document ID in AGENTS.md"
-check_content "nltotoi.json"     "NeuroLift-Technologies/neurolift-ai-fusion" "Repository name in manifest"
-check_content "nltotoi.json"     "ORG-DEV-OTOI-1.0.0"            "Document ID in manifest"
+check_content "AGENTS.md"        "ORG-DEV-OTOI-1.0.3"            "Document ID in AGENTS.md"
+check_content "nltotoi.json"     "NeuroLift-Technologies/nlt-app" "Repository name in manifest"
+check_content "nltotoi.json"     "ORG-DEV-OTOI-1.0.3"            "Document ID in manifest"
 check_content "nltotoi.json"     "NLT-DEV-OTOI.md"               "Canonical contract path in manifest"
+check_content ".claude/settings.json" "SessionStart"             "SessionStart hook wired in .claude/settings.json"
+check_content ".claude/hooks/session-start.sh" "ORG-DEV-OTOI-1.0.3" "OTOI version referenced in session-start hook"
 
 echo ""
 
