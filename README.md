@@ -13,9 +13,22 @@ World Engine  ──>>  AI-Fusion  ──>>  nlt-app (1:20)
                                           └─ 20th advocate = small Developer builder
 ```
 
-**Full-Stack Avatar-Aide-Advocate Training Platform**
+## Related Repos — World >> Fusion >> App
 
-A full-stack web and mobile platform backed by a Python AI simulation engine. AI Avatars with ADHD traits experience authentic life struggles in a Sims/RPG-style environment while AI Aides provide real-time coaching. After sufficient training they fuse into Advocates that combine lived understanding with expert solutions.
+> This repo (**nlt-app**) only runs the **personalized delivery layer** and calls the other two via **A2A / agent interface** — it does **not** embed their code (archived to `archive/pre-1-20-fullstack-2026-09-03/`).
+
+- **World Engine**: https://github.com/NeuroLift-Technologies/nlt-world-engine — embodied UE 5.8 simulation (upstream; ECS, world_map, WorldEngineDO Durable Object)
+- **AI-Fusion**: https://github.com/NeuroLift-Technologies/neurolift-ai-fusion — trains the 1:20 advocates (midstream; SessionOrchestrator, FusionEngine, ReadinessAssessor)
+
+```
+World Engine (nlt-world-engine, UE 5.8) ──>> AI-Fusion (neurolift-ai-fusion, trains 1:20) ──>> nlt-app (this repo, runs 1:20 runtime)
+     ECS / world simulation                     avatar-aide-adocate training                  1 orchestrator : 20 advocates (20th = Developer builder per user)
+                                              Do NOT re-vendor: reference & link via A2A.
+```
+
+**Full-Stack Avatar-Aide-Advocate Training Platform (now split: World >> Fusion >> App)**
+
+This repo is the **app-only delivery layer** — a web and mobile platform that *references* the upstream simulation and training. Avatars, Aides, and Advocates are still the product (ADHD experiential learning), but the Python AI simulation engine, world ECS, fusion, and training configs now live in the two upstream repos above. After sufficient upstream training they fuse into Advocates; this repo delivers them to the end user.
 
 ```yaml
 ai_assistant_directive:
@@ -27,12 +40,14 @@ ai_assistant_directive:
 
 ## Quick Start
 
-### API (FastAPI — Python)
+### API — App Gateway (FastAPI — Python, app-only)
 ```bash
 cd apps/api
 pip install -r requirements.txt
-PYTHONPATH=../../src uvicorn main:app --reload
-# → http://localhost:8000/docs
+uvicorn main:app --reload --port 8000
+# → http://localhost:8000/api/docs
+# Note: simulation/fusion endpoints were archived to archive/pre-1-20-fullstack-2026-09-03/apps-api/
+# and now live in nlt-world-engine + neurolift-ai-fusion — called via A2A, not vendored.
 ```
 
 ### Web App (Next.js)
@@ -54,27 +69,28 @@ npx expo start
 # → scan QR with Expo Go on your device
 ```
 
-### Simulation Engine (Python)
-```bash
-pip install -r requirements.txt
-pytest
-```
+### Simulation Engine (Python) — archived
+
+Simulation, world ECS, fusion, and training now live in:
+- **World Engine**: https://github.com/NeuroLift-Technologies/nlt-world-engine
+- **AI-Fusion**: https://github.com/NeuroLift-Technologies/neurolift-ai-fusion
+
+Archived here: `archive/pre-1-20-fullstack-2026-09-03/src/` (+ `backend/`, `services/`, `data/`, `supabase/`, `prototypes/`)
 
 ### JavaScript dependency boundaries
 
-The repository currently has multiple JavaScript package-manager surfaces:
+The repository is now **app-only** with two package-manager surfaces:
 
 | Path | Lockfile | Use for |
 | --- | --- | --- |
 | `apps/web/` | `pnpm-lock.yaml` | Next.js web surface and `/simulation-lab` |
 | `apps/mobile/` | `package-lock.json` | Expo mobile starter |
-| `cloudflare-engine/` | `package-lock.json` | World Engine Worker and local Wrangler CLI |
+
+> `cloudflare-engine/` (WorldEngineDO) was archived to `archive/pre-1-20-fullstack-2026-09-03/cloudflare-engine/` — see https://github.com/NeuroLift-Technologies/nlt-world-engine for the canonical Worker.
 
 Use the lockfile in the package you are changing. For web-only dependency work,
 run pnpm inside `apps/web/` so the checked-in `pnpm-lock.yaml` stays in sync and
-avoid creating an `apps/web/package-lock.json`. For the Cloudflare worker, run
-`npm ci` from `cloudflare-engine/` so local `npx wrangler ...` commands use the
-repo-pinned Wrangler v4 dependency instead of a global install.
+avoid creating an `apps/web/package-lock.json`.
 
 ---
 
@@ -605,72 +621,51 @@ See `archive/legacy-content/nlt-business-agents/implementation-guide.md` for his
 
 *This framework enables two humans to effectively run a billion-dollar operation by orchestrating specialized AI agents while maintaining strategic control and operational oversight.*
 
-## 📁 Repository Structure
+## 📁 Repository Structure — App-Only (post-2026-09-03)
+
+> **Stripped to app delivery layer.** Simulation/fusion/world code was moved via `git mv` to `archive/pre-1-20-fullstack-2026-09-03/` and now lives in upstream repos (linked, not vendored).
 
 ```
-neurolift-ai-fusion/
-business-agents-repo/
-├── README.md                           # This file
-├── TOI-OTOI-INTEGRATION.md            # TOI-OTOI framework documentation
-├── HUMAN-OVERSIGHT-PROTOCOLS.md       # Human control and oversight guidelines
-├── AGENT-ORCHESTRATION-GUIDE.md       # How agents coordinate and communicate
-├── .github/                           # GitHub workflows + custom agent prompt definitions
-├── config/                            # Global configuration files
-├── archive/legacy-content/business-structure/  # Archived planning assets
-│   ├── 1-person-structure/
-│   │   ├── neurodivergent-adhd-ai-fusion-system/
-│   │   ├── toi-otoi-framework/
-│   │   └── rrt-aidvocai-te/
-│   └── 2-person-structure/
-│       ├── executive-agents/
-│       ├── department-agents/
-│       └── human-interfaces/
-├── shared-resources/                  # Templates, prompts, knowledge bases
-├── monitoring/                        # Agent performance and decision tracking
-└── docs/                             # Architecture and implementation guides
-
-src/
-├── avatars/         # Individual Avatar implementations
-├── aides/           # Aide support systems
-├── advocates/       # Fused Advocate intelligences
-└── fusion/          # TOI-OTOI fusion algorithms
-
-cloudflare/          # Cloudflare integration (NEW)
-├── connector.py     # Cloudflare API connector
-├── workers/         # Cloudflare Workers
-├── config/          # Configuration files
-└── utils/           # Deployment and helper scripts
-
-docs/
-├── framework/       # TOI-OTOI framework documentation
-├── architecture/    # System architecture and design
-├── business/        # Business plans and strategy
-└── cloudflare/      # Cloudflare setup guide
-
-config/
-├── avatars.yaml     # Avatar configurations
-├── fusion.yaml      # TOI-OTOI fusion parameters
-└── privacy.yaml     # Privacy and security settings
-
-assets/
-├── diagrams/        # Architecture diagrams
-├── mockups/         # UI/UX designs
-└── presentations/   # Business presentations
-neuroLift-simulation/
-├── docs/                    # Comprehensive documentation
-├── src/                     # Core implementation
-│   ├── avatars/            # Avatar system and ADHD traits
-│   ├── aides/              # Aide system and expertise modules
-│   ├── simulation/         # Simulation environment and scenarios
-│   ├── advocates/          # Fusion engine and Advocate system
-│   └── utils/              # Utilities and shared components
-├── tests/                  # Comprehensive test suite
-├── scripts/                # Setup and execution scripts
-├── configs/                # All configuration files
-├── data/                   # Local storage (privacy-first)
-├── archive/                # Archived content for reference
-└── archive/legacy-content/nlt-business-agents/    # Archived business agent framework
+nlt-app/  (app-only delivery layer)
+├── apps/
+│   ├── web/              # Next.js — personalized 1:20 runtime (kept)
+│   ├── mobile/           # Expo — iOS & Android (kept)
+│   └── api/              # Minimal FastAPI gateway stub (kept; full simulation routers archived to archive/pre-1-20-.../apps-api/)
+├── src/
+│   ├── orchestrator/     # 1 orchestrator stub — calls World Engine + AI-Fusion via A2A (kept, NEW)
+│   ├── advocates/
+│   │   └── 20-developer/ # small Developer builder that remakes app per user (kept, NEW)
+│   ├── governance/       # governance passthrough — see NLT-DEV-OTOI.md (kept, NEW)
+│   └── surfaces/         # registry of web/mobile surfaces (kept, NEW)
+├── packages/
+│   └── simulation-sdk/   # shared TS client (kept; now points to upstream A2A endpoints)
+├── public/               # static assets (kept)
+├── config/               # global TOI configs (kept; simulation configs now canonical in upstream repos)
+├── templates/            # agent templates (kept)
+├── docs/                 # updated to link upstream (see ARCHITECTURE.md)
+│   └── ARCHITECTURE.md   # pipeline diagram + upstream links (NEW)
+├── archive/
+│   ├── pre-1-20-fullstack-2026-09-03/  # reversible archive of stripped code (NEW)
+│   │   ├── src/                        # advocates, aides, avatars, fusion, simulation, core, database, utils, ecs.ts, world_map.ts, index.ts
+│   │   ├── backend/                    # FastAPI simulation backend
+│   │   ├── cloudflare-engine/          # WorldEngineDO Durable Object
+│   │   ├── data/                       # simulation templates
+│   │   ├── prototypes/world-engine/    # browser prototype
+│   │   ├── services/api/               # simulation service
+│   │   ├── supabase/migrations/        # simulation DB schema
+│   │   └── apps-api/                   # full simulation API routers
+│   └── legacy-content/   # earlier business-agent archive (kept)
+└── .nltotoi/ + NLT-DEV-OTOI.md + AGENTS.md  # governance (kept intact)
 ```
+
+**What lives elsewhere (referenced, not vendored):**
+
+- **World Engine**: https://github.com/NeuroLift-Technologies/nlt-world-engine — simulation ECS, world_map, time/relationship/scenario systems, NPCs, UE 5.8 embodied sim
+- **AI-Fusion**: https://github.com/NeuroLift-Technologies/neurolift-ai-fusion — SessionOrchestrator, FusionEngine, ReadinessAssessor, avatars/aides/advocates training
+- **Governance (private)**: https://github.com/NeuroLift-Technologies/.github-private — OTOI contracts, SOPs, templates
+
+No git submodules — links above are sufficient per app-only policy. Restore any archived path with `git log --follow`.
+
 
 ## 🔬 Development Phases
 

@@ -1,5 +1,18 @@
 # NeuroLift Technologies — Agent Reference Links
 
+> **Pipeline:** `World Engine >> AI-Fusion >> App` — This repo (`nlt-app`) is the app-only delivery layer. It **references and links** to the other two repos via A2A/agent interface and does not vendor their code (archived to `archive/pre-1-20-fullstack-2026-09-03/`).
+
+## Related Repos — World >> Fusion >> App
+
+- **World Engine**: [NeuroLift-Technologies/nlt-world-engine](https://github.com/NeuroLift-Technologies/nlt-world-engine) — embodied UE 5.8 simulation (ECS, world_map, WorldEngineDO, time/relationship/scenario systems, NPCs)
+- **AI-Fusion**: [NeuroLift-Technologies/neurolift-ai-fusion](https://github.com/NeuroLift-Technologies/neurolift-ai-fusion) — trains the 1:20 advocates (SessionOrchestrator, FusionEngine, ReadinessAssessor, avatars/aides/advocates)
+- **Governance (private)**: [NeuroLift-Technologies/.github-private](https://github.com/NeuroLift-Technologies/.github-private) — canonical OTOI contracts, SOPs, templates, agent registration (see also public mirror: [NeuroLift-Technologies/.github](https://github.com/NeuroLift-Technologies/.github))
+- **This repo (nlt-app)**: [NeuroLift-Technologies/nlt-app](https://github.com/NeuroLift-Technologies/nlt-app) — runs the personalized 1:20 runtime where the 20th advocate is a small Developer builder that remakes the app per user; calls upstream via A2A.
+
+No git submodules — links above are sufficient. Archived full-stack code lives in `archive/pre-1-20-fullstack-2026-09-03/` (moved via `git mv` to preserve history).
+
+---
+
 This file is a curated reference for coding agents working on NeuroLift Technologies org repos.
 Use these repositories for skills, tools, documentation, and starter patterns when building on
 the Cloudflare developer platform.
