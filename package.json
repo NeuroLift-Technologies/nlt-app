@@ -1,5 +1,5 @@
 {
-  "name": "world-engine",
+  "name": "nlt-app",
   "private": true,
   "packageManager": "npm@11.17.0",
   "workspaces": [

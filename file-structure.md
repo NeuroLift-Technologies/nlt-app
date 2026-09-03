@@ -1,3 +1,93 @@
+# nlt-app — File Structure (app-only, 2026-09-03)
+
+> **Pipeline:** `World Engine >> AI-Fusion >> nlt-app (1:20)` — This repo is the **app-only delivery layer**. Simulation, fusion, and world code were moved via `git mv` to `archive/pre-1-20-fullstack-2026-09-03/` and now live in upstream repos (referenced via A2A, not vendored). No git submodules — links are sufficient.
+
+## Related Repos — World >> Fusion >> App
+
+- **World Engine**: [NeuroLift-Technologies/nlt-world-engine](https://github.com/NeuroLift-Technologies/nlt-world-engine) — embodied UE 5.8 simulation — ECS, `world_map`, simulation environment, NPCs, `WorldEngineDO` Durable Object
+- **AI-Fusion**: [NeuroLift-Technologies/neurolift-ai-fusion](https://github.com/NeuroLift-Technologies/neurolift-ai-fusion) — trains the 1 orchestrator + 20 advocates — `SessionOrchestrator`, `FusionEngine`, `ReadinessAssessor`, avatars/aides/advocates
+- **Governance (private)**: [NeuroLift-Technologies/.github-private](https://github.com/NeuroLift-Technologies/.github-private) — canonical OTOI contracts (see public mirror: [.github](https://github.com/NeuroLift-Technologies/.github))
+
+```
+World Engine (nlt-world-engine, UE 5.8) ──>> AI-Fusion (neurolift-ai-fusion, trains 1:20) ──>> nlt-app (this repo, runs 1:20 runtime)
+     ECS / world simulation                     avatar-aide-adocate training                  1 orchestrator : 20 advocates (20th = Developer builder per user)
+                                              Do NOT re-vendor: reference & link via A2A.
+```
+
+## Current Minimal App-Only Layout
+
+```
+nlt-app/
+├── apps/
+│   ├── web/                  # Next.js web app — kept (personalized delivery)
+│   │   ├── app/              # Next.js app router (page.tsx, layout.tsx, api/insights/route.ts, simulation-lab/, world/)
+│   │   ├── components/       # UI + neurolift/* (fusion-simulator, pairs-grid, etc.)
+│   │   ├── lib/              # avatar-pairs-data.ts
+│   │   ├── src/simulation/   # web-only simulation-lab fixture + world polling types (NOT vendored root src/simulation)
+│   │   └── package.json      # workspace: @neurolift/web
+│   ├── mobile/               # Expo mobile app — kept
+│   │   ├── app/              # expo-router tabs + session screens
+│   │   └── src/api/client.ts # mobile API client (calls app gateway / upstream via A2A)
+│   └── api/                  # Minimal FastAPI gateway stub — kept (was full simulation API; archived to archive/pre-1-20-.../apps-api/)
+│       ├── main.py           # health + gateway (links to upstream)
+│       └── requirements.txt
+├── src/                      # App-only stubs (NEW, replaces vendored simulation/fusion)
+│   ├── orchestrator/         # 1 orchestrator — calls World Engine + AI-Fusion via A2A
+│   │   ├── README.md
+│   │   ├── index.ts          # AppOrchestrator stub
+│   │   └── __init__.py
+│   ├── advocates/
+│   │   └── 20-developer/     # 20th advocate — small Developer builder that remakes app per user
+│   │       ├── README.md
+│   │       ├── index.ts
+│   │       └── __init__.py
+│   ├── governance/           # governance passthrough — see NLT-DEV-OTOI.md
+│   │   └── README.md
+│   ├── surfaces/             # registry of web/mobile surfaces the builder can patch
+│   │   └── README.md
+│   └── __init__.py
+├── packages/
+│   └── simulation-sdk/       # shared TS contracts/client — kept (now points to upstream A2A endpoints)
+├── public/                   # static assets — kept
+├── config/                   # global TOI configs — kept (simulation configs canonical in upstream repos)
+├── templates/                # agent templates — kept
+├── docs/
+│   ├── ARCHITECTURE.md       # pipeline diagram + upstream links (NEW)
+│   ├── architecture.md       # existing architecture overview (kept)
+│   ├── active-threads.md     # thread tracking (kept)
+│   └── agent-log/            # handoffs/registrations (kept)
+├── archive/
+│   ├── pre-1-20-fullstack-2026-09-03/  # NEW — reversible archive (git mv preserved history)
+│   │   ├── src/              # advocates, aides, avatars, fusion, simulation, core, database, utils, ecs.ts, world_map.ts, index.ts
+│   │   ├── backend/          # FastAPI simulation backend (legacy)
+│   │   ├── cloudflare-engine/# WorldEngineDO Durable Object (world-specific)
+│   │   ├── data/             # simulation templates
+│   │   ├── prototypes/       # world-engine browser prototype
+│   │   ├── services/api/     # simulation service
+│   │   ├── supabase/         # simulation DB migrations
+│   │   └── apps-api/         # full simulation routers (avatars, aides, sessions, advocates)
+│   └── legacy-content/       # earlier archive — kept
+├── wrangler.toml             # root Wrangler — kept but now app-gateway only; WorldEngineDO lives in nlt-world-engine
+├── package.json              # workspaces: ["apps/web","apps/mobile"] — kept minimal
+├── turbo.json                # tasks: build/dev/lint/type-check — kept
+└── NLT-DEV-OTOI.md + AGENTS.md + .nltotoi/ + .claude/  # governance — kept intact (38 checks)
+```
+
+## What Lives Elsewhere (Referenced, Not Vendored)
+
+| Concern | Canonical Repo | Key Files |
+|---|---|---|
+| Simulation ECS, world_map, time/relationships/scenario, NPCs, world_engine | [nlt-world-engine](https://github.com/NeuroLift-Technologies/nlt-world-engine) | `src/simulation/*`, `src/ecs.ts`, `src/world_map.ts`, `src/index.ts` (WorldEngineDO), `cloudflare-engine/*` |
+| Avatar/Aide/Advocate training, fusion, readiness, Python simulation SDK | [neurolift-ai-fusion](https://github.com/NeuroLift-Technologies/neurolift-ai-fusion) | `src/advocates/*`, `src/aides/*`, `src/avatars/*`, `src/fusion/*`, `src/core/*`, `src/database/*`, `config/*`, `data/*` |
+| Supabase simulation schema | [neurolift-ai-fusion](https://github.com/NeuroLift-Technologies/neurolift-ai-fusion) or [nlt-world-engine](https://github.com/NeuroLift-Technologies/nlt-world-engine) | `supabase/migrations/*` (archived here) |
+| Governance contracts, SOPs, templates | [.github-private](https://github.com/NeuroLift-Technologies/.github-private) | `NLT-DEV-OTOI.md`, `SOPs/*`, `templates/*`, `.nltotoi/*` |
+
+To restore any vendored path for inspection:
+
+```bash
+git log --follow -- archive/pre-1-20-fullstack-2026-09-03/src/simulation/session_orchestrator.py
+git show HEAD:archive/pre-1-20-fullstack-2026-09-03/src/fusion/fusion_engine.py
+```
 
 ## Architecture Decision: Public vs. Private Governance
 
@@ -5,208 +95,21 @@
 |---|---|---|---|
 | **Public governance identity** | `NeuroLift-Technologies/.github` | All agents, public | Solidarity Framework principles, HAIEF attribution, org profile |
 | **Private operational governance** | `NeuroLift-Technologies/.github-private` | Internal coding agents only | TOI-OTOI contracts, internal procedures, escalation templates, agent registration |
-| **Repo-level stubs** | Each NLT repo | That repo's agents | Thin pointers to both repos above |
+| **Repo-level stubs** | Each NLT repo (including this one) | That repo's agents | Thin pointers to both repos above + app-specific stubs (`src/governance`) |
 
-The key insight: the **principles** are public (Solidarity Framework is open-source). The **operational machinery** — who escalates what, how agents register, internal handoff formats, credential procedures — is private.
+## Previous Content (preserved for reference via archive)
 
----
+<details>
+<summary>Prior file-structure notes (pre-2026-09-03) — click to expand</summary>
 
-## `.github-private` File Structure (from nlt-business-agents)
+The previous version of this file documented `.github-private` internal file structure
+from `nlt-business-agents`. That content is preserved in git history:
 
-```
-.github-private/
-├── AGENTS.md                          ← Internal gateway (extends public AGENTS.md)
-├── NLT-DEV-OTOI.md                    ← Full coding agent contract (from docs/context/)
-├── nltotoi.json                       ← Internal discovery manifest
-│
-├── agents/                            ← GitHub Copilot custom agent profiles (org-wide)
-│   ├── README.md                      ← NLT standards and instructions for custom agents
-│   ├── example-agent.md               ← Commented-out starter template
-│   ├── nlt-governance-steward.md      ← Governance compliance and OTOI guidance agent
-│   ├── nlt-code-reviewer.md           ← Security/quality code review agent
-│   └── nlt-onboarding-assistant.md    ← SOP-NLT-001 onboarding guide agent
-│
-├── skills/                            ← GitHub Copilot custom skill definitions (org-wide)
-│   ├── README.md                      ← NLT standards and compliance requirements for skills
-│   └── example-skill/
-│       └── SKILL.md                   ← Commented-out starter template for new skills
-│
-├── .github/
-│   ├── agents/                        ← VS Code / GitHub Copilot Chat agent profiles
-│   │   ├── nlt-governance-steward.agent.md   ← VS Code variant with tools + handoffs
-│   │   ├── nlt-code-reviewer.agent.md        ← VS Code variant with tools + handoffs
-│   │   └── nlt-onboarding-assistant.agent.md ← VS Code variant with tools + handoffs
-│   └── workflows/
-│       ├── validate-governance.yml           ← Core governance validation
-│       ├── incident-detection.yml            ← Credential/secret scanning
-│       ├── repo-governance-check.yml         ← Reusable compliance check (workflow_call)
-│       ├── agent-commit-format.yml           ← Commit message format enforcement
-│       ├── agent-session-check.yml           ← Handoff record verification
-│       ├── org-repo-compliance.yml           ← Weekly org-wide repo scanning
-│       ├── agent-profile-validation.yml      ← Validates agents/*.md NLT frontmatter
-│       ├── skill-profile-validation.yml      ← Validates skills/*/SKILL.md NLT frontmatter
-│       ├── org-runner-health.yml             ← Self-hosted runner availability monitoring
-│       └── org-actions-policy.yml            ← Non-allowlisted GitHub Actions scanning
-│
-├── .nltotoi/
-│   ├── index/
-│   │   └── governance-files.md       ← Internal file index
-│   ├── contracts/
-│   │   └── README.md                 ← Contract namespace
-│   ├── scripts/
-│   │   └── validate-governance.sh    ← Validation script
-│   └── proposals/
-│       └── validation-roadmap.md
-│
-├── templates/
-│   ├── agent-registration.json       ← From OTOI Section 3
-│   ├── handoff-record.json           ← From OTOI Section 5
-│   ├── escalation.md                 ← From OTOI Section 4.3
-│   └── intent-log.md                 ← From docs/agent-log/ pattern
-│
-├── ISSUE_TEMPLATE/
-│   ├── agent-escalation.md           ← Escalation as GitHub Issue
-│   └── governance-proposal.md        ← For OTOI amendments
-│
-├── PULL_REQUEST_TEMPLATE/
-│   └── agent-contribution.md         ← PR template with governance checklist
-│
-├── workflows/
-│   └── validate-governance.yml       ← CI: runs validate-governance.sh on push
-│
-└── SOPs/
-    ├── new-agent-onboarding.md       ← How to onboard a new coding agent
-    ├── repo-governance-setup.md      ← How to add governance to a new NLT repo
-    └── incident-response.md          ← What to do when an agent goes off-rails
+```bash
+git show 5d39734:file-structure.md
 ```
 
----
+and in `archive/pre-1-20-fullstack-2026-09-03/` for the simulation/fusion split.
+Key governance file index remains at `.nltotoi/index/governance-files.md`.
 
-## Content Mapping from `nlt-business-agents`
-
-### Direct Lifts (copy with minor adjustments)
-
-| Source (nlt-business-agents) | Destination (.github-private) | Change |
-|---|---|---|
-| `docs/context/NLT-DEV-OTOI.md` | `NLT-DEV-OTOI.md` | Update `document_id` to `ORG-DEV-OTOI-1.0.0`, remove project-specific stack references |
-| `AGENTS.md` | `AGENTS.md` | Internal version — keep full coordination protocol, add pointer to public `.github` AGENTS.md |
-| `nltotoi.json` | `nltotoi.json` | Update `repository` field to reference org scope, not single repo |
-| `.nltotoi/` (entire namespace) | `.nltotoi/` | Direct copy — validation script already works at org level |
-| `docs/agent-log/` templates | `templates/` | Extract JSON blocks from OTOI Sections 3 & 5 into standalone template files |
-
-### Restructured Content
-
-**`templates/agent-registration.json`** — Extract from OTOI Section 3:
-```json
-{
-  "agent_registration": {
-    "agent_name":         "[Your name / platform identifier]",
-    "platform":           "[e.g. Codex CLI, Claude Code, Cursor, Gemini CLI, GitHub Copilot]",
-    "version":            "[Model or tool version, if known]",
-    "session_id":         "[Unique session identifier, if applicable]",
-    "entry_date":         "[ISO 8601 date, e.g. 2026-03-31]",
-    "entry_point":        "[Which file, task, or conversation brought you in]",
-    "acknowledged_otoi":  true,
-    "otoi_version":       "ORG-DEV-OTOI-1.0.0",
-    "working_repo":       "[e.g. NeuroLift-Technologies/some-repo]",
-    "working_branch":     "[e.g. feature/my-feature]",
-    "capabilities_self_reported": [
-      "[List your relevant capabilities]"
-    ],
-    "known_limitations": [
-      "[List known limitations relevant to this task]"
-    ],
-    "preferred_handoff_format": "[Describe how you prefer to receive context, e.g. structured JSON, narrative summary]"
-  }
-}
-```
-
-**`PULL_REQUEST_TEMPLATE/agent-contribution.md`** — New, built from OTOI commit format:
-```markdown
-## Agent Contribution Checklist
-
-**Agent:** [Name]  
-**Session:** [Branch/session ID]  
-**Governed by:** DEV-OTOI-1.0.0
-
-### Before Merging
-- [ ] Governance validation script passed (`.nltotoi/scripts/validate-governance.sh`)
-- [ ] `docs/active-threads.md` updated
-- [ ] Handoff record written to `docs/agent-log/handoffs/`
-- [ ] Escalations resolved or documented in `docs/escalations/`
-- [ ] No LLM provider locked in without Josh's approval
-- [ ] No architecture decisions made without Josh's approval
-
-### Commit Format Used
-`[AGENT_NAME] type(scope): description`
-```
-
-**`workflows/validate-governance.yml`** — New CI wrapper:
-```yaml
-name: Governance Validation
-on: [push, pull_request]
-
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run governance validation
-        run: bash .nltotoi/scripts/validate-governance.sh
-```
-
----
-
-## What Goes in the Public `.github` Repo
-
-| File | Content |
-|---|---|
-| `AGENTS.md` | Thin gateway — points to `.github-private` for internal governance, includes public Solidarity Framework principles |
-| `NLT-GOVERNANCE.md` | Public version of OTOI — principles, ethical commitments, HAIEF attribution. No internal procedures |
-| `CLAUDE.md` | 30-line directive: who we are, read `NLT-GOVERNANCE.md`, escalate to Josh |
-| `profile/README.md` | Public org face — mission, HAIEF link, Solidarity Framework |
-| `CODE_OF_CONDUCT.md` | Built from OTOI Section 8 ethical pillars |
-| `CONTRIBUTING.md` | Public contribution guidelines |
-
----
-
-## Implementation Sequence
-
-1. **Create `NeuroLift-Technologies/.github-private`** (private repo, org members only)
-2. **Populate from nlt-business-agents** using the mapping table above
-3. **Update `nltotoi.json`** in `.github-private` to scope to org:
-   ```json
-   "repository": {
-     "name": "NeuroLift-Technologies/.github-private",
-     "purpose": "Internal coding agent governance — TOI-OTOI operational contracts",
-     "mode": "production"
-   }
-   ```
-4. **Create/update public `.github`** with thin public-facing versions
-5. **Add lightweight stubs** to each existing NLT repo — a `CLAUDE.md` that points to both repos
-
----
-
-## Stub Template for Each NLT Repo
-
-Drop this `CLAUDE.md` in each repo root:
-
-```markdown
-# CLAUDE.md — [REPO NAME]
-
-You are working in a NeuroLift Technologies repository.
-
-**Mandatory reading (in order):**
-1. Org-level governance: https://github.com/NeuroLift-Technologies/.github-private/blob/main/NLT-DEV-OTOI.md
-2. Project context: `docs/context/README_TO_AI.md` (this repo)
-3. Active threads: `docs/active-threads.md` (this repo)
-
-**Non-negotiable:** Joshua W. Dorsey, Sr. is final authority on all architectural, 
-deployment, UX, and strategic decisions. Escalate. Do not guess.
-
-**Governed by:** Solidarity Framework | HAIEF | https://elevaitionfoundation.org
-```
-
----
-
-The `.github-private` repo becomes the internal constitution that every coding agent reads at session start — operational, specific, enforced. The public `.github` repo becomes the Solidarity Framework's public face. The two together give you exactly the three-tier model the Claude Code (Opus) handoff document designed — and that Codex CLI and other agents now follow: org canonical → repo operational → public identity.
+</details>

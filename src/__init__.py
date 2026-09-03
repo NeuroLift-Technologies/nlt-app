@@ -1,12 +1,5 @@
-"""
-NeuroLift Technologies Simulation Environment
-
-A Sims/RPG-style simulation environment where AI Avatars with ADHD traits
-experience authentic life struggles while AI Aides provide real-time coaching.
-After sufficient training through repeated scenarios, they fuse into Advocates
-that combine lived understanding with expert solutions.
-"""
-
-__version__ = "0.2.0"
-__author__ = "NeuroLift Technologies"
-__email__ = "contact@neuroLift.com"
+# nlt-app — app-only package
+# Simulation/fusion/world code archived to archive/pre-1-20-fullstack-2026-09-03/src/
+# Upstream repos:
+#   World Engine: https://github.com/NeuroLift-Technologies/nlt-world-engine
+#   AI-Fusion: https://github.com/NeuroLift-Technologies/neurolift-ai-fusion

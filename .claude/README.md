@@ -1,16 +1,16 @@
 # `.claude/` — Claude Code Session Governance
 
-**Synced from:** `NeuroLift-Technologies/.github-private` (canonical)
-**Governed by:** ORG-DEV-OTOI-1.0.0 | Solidarity Framework | HAIEF
+**Synced from:** `NeuroLift-Technologies/.github-private` (canonical) — mirrored to this **public** app repo via PR #1 (governance propagation)
+**Governed by:** ORG-DEV-OTOI-1.0.3 | Solidarity Framework | HAIEF
 **Authority:** Joshua W. Dorsey, Sr.
 
 ---
 
-## DO NOT EDIT FILES HERE
+## Repo-owned overlay
 
-This directory is a **synced copy** of the canonical template in `NeuroLift-Technologies/.github-private/.claude/`. The `governance-auto-propagate.yml` workflow overwrites this directory whenever upstream changes.
+This directory **was** a synced copy of `.github-private/.claude`, but `nlt-app` is a public delivery repo. The `governance-auto-propagate` sync for `.claude/` is paused for this repo during the visibility split (THREAD-027). Local governance patches (settings `1.0.3`, `REVIEW.md` check) are therefore maintained here until the upstream public-mirror lands.
 
-**To change session governance:** open a PR against `.github-private/.claude/`. Once merged, the next propagation run will open a sync PR here.
+**To change session governance long-term:** open a PR against `.github-private/.claude/` — once `governance-auto-propagate` is re-enabled for public repos, the next run will re-sync.
 
 **For repo-specific overrides:** create `.claude/settings.local.json` in this repo. The propagation workflow never touches that file.
 
@@ -32,4 +32,4 @@ When a Claude Code session starts in this repo:
 
 ---
 
-*Synced from `NeuroLift-Technologies/.github-private` | ORG-DEV-OTOI-1.0.0*
+*Synced from `NeuroLift-Technologies/.github-private` | ORG-DEV-OTOI-1.0.3 — local overlay for public `nlt-app` (see above)*
