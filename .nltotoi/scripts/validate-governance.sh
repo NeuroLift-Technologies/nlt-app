@@ -163,6 +163,19 @@ check_content ".claude/settings.json" "SessionStart"             "SessionStart h
 check_content ".claude/hooks/session-start.sh" "ORG-DEV-OTOI-1.0.3" "OTOI version referenced in session-start hook"
 
 echo ""
+echo "[ App Decoupling ]"
+# Verify apps/ does not import archived world/fusion code (stripped to App-only)
+# Only flag Python-style from src.* imports for archived modules; apps/web/src/simulation lab is kept and uses relative TS imports (../../src/simulation) which are OK
+if grep -R --include="*.py" --include="*.ts" --include="*.tsx" -E "^\s*(from|import).*src\.(fusion|simulation|avatars|aides|core|database)" apps/ 2>/dev/null | head -n 5 | grep -q .; then
+  echo "  ❌ DECOUPLING FAILED: apps/ still imports archived src (see grep below)"
+  grep -R --include="*.py" --include="*.ts" --include="*.tsx" -E "^\s*(from|import).*src\.(fusion|simulation|avatars|aides|core|database)" apps/ 2>/dev/null | head -n 10
+  ((FAIL++)) || true
+else
+  echo "  ✅ DECOUPLED: apps/ does not import archived src"
+  ((PASS++)) || true
+fi
+
+echo ""
 
 # --- Summary ---
 echo "=============================================="

@@ -1,0 +1,56 @@
+{
+    "handoff_record": {
+        "session_id": "feat/governance-sync-1-20",
+        "agent_name": "AI CTO Agent + General (muse-spark-1.2)",
+        "date": "2026-09-03T22:35:00Z",
+        "otoi_version": "ORG-DEV-OTOI-1.0.3",
+        "repo": "NeuroLift-Technologies/nlt-app",
+        "branch": "feat/governance-sync-1-20",
+        "work_completed": [
+            "Synced governance to ORG-DEV-OTOI-1.0.3: nltotoi.json repo->nlt-app purpose App delivery layer, .nltotoi/scripts/validate-governance.sh 38 checks, NLT-DEV-OTOI.md/AGENTS.md/.claude hooks 1.0.3, REVIEW.md byte-identical to .github-private@main (PR #174), package.json name nlt-app",
+            "Stripped repo to app-only (World >> Fusion >> App, 1:20): git mv src/advocates,aides,avatars,fusion,simulation,core,database,utils,ecs.ts,world_map.ts,index.ts, backend, cloudflare-engine, data, prototypes, supabase, services, apps/api routers to archive/pre-1-20-fullstack-2026-09-03/ (101 true renames, history via git log --follow), recreated apps/api/main.py minimal gateway and src/orchestrator + src/advocates/20-developer + src/governance + src/surfaces stubs",
+            "Added references to upstream repos: README.md Related Repos section with links to nlt-world-engine + neurolift-ai-fusion + .github-private, docs/ARCHITECTURE.md pipeline diagram, file-structure.md and links.md rewritten to app-only",
+            "PR #2 opened as [GOVERNANCE] refactor(app): strip to app-only (82fd4a7) \u2014 docs + moves, reversible archive"
+        ],
+        "work_in_progress": [
+            "PR #2 review fixes for CHANGES REQUESTED (Cline + Kilo): nltotoi visibility, handoff, CORS, wrangler, .claude overlay, tsconfig archive exclude"
+        ],
+        "blockers": [
+            "PR #2 Workers Builds: world-engine failing due to archived src still referenced by wrangler.toml (to be removed) and .claude sync model mismatch"
+        ],
+        "decisions_made": [
+            "Keep apps/web + apps/mobile as only surfaces; archive full-stack simulation code to archive/pre-1-20-fullstack-2026-09-03/ rather than delete",
+            "Use links not submodules for World Engine and AI-Fusion references",
+            "App-only gateway is FastAPI with /health only, not embedding simulation",
+            "20th advocate is small Developer builder that outputs config/component diff under governance, not raw FS writes"
+        ],
+        "decisions_pending": [
+            "Public visibility wording for nltotoi.json (now set to public/public-app-delivery) \u2014 confirm with Joshua per visibility split THREAD-027",
+            "Whether to delete vs rename wrangler.toml or disable Cloudflare build integration for nlt-app (canonical Worker is in nlt-world-engine)",
+            "CI guard for apps/** imports of archived src (grep) \u2014 to be added as validate check"
+        ],
+        "escalations": [],
+        "next_agent_notes": "Fixup for PR #2 is next: patch nltotoi.json visibility, add this handoff, tighten CORS, remove wrangler.toml, clarify .claude overlay, exclude archive from tsconfig. All on same branch feat/governance-sync-1-20 before merge.",
+        "files_modified": [
+            "nltotoi.json",
+            "package.json",
+            "README.md",
+            "docs/active-threads.md",
+            "REVIEW.md",
+            "file-structure.md",
+            "links.md",
+            "docs/ARCHITECTURE.md",
+            "apps/api/main.py",
+            "src/orchestrator/index.ts",
+            "src/advocates/20-developer/index.ts",
+            "archive/pre-1-20-fullstack-2026-09-03/README.md"
+        ],
+        "tests_run": [
+            "bash .nltotoi/scripts/validate-governance.sh \u2014 38 passed (pre-fixup)",
+            "npx tsc --noEmit \u2014 exit 0 (archive included at time)",
+            "gh pr checks 2 \u2014 validate \u2705, Analyze \u2705, CodeQL \u2705, GitGuardian \u2705, Workers Builds \u274c world-engine"
+        ],
+        "tests_passing": true,
+        "pr_url": "https://github.com/NeuroLift-Technologies/nlt-app/pull/2"
+    }
+}

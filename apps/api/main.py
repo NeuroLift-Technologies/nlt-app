@@ -34,12 +34,14 @@ app = FastAPI(
 )
 
 _raw_origins = os.environ.get("ALLOWED_ORIGINS", "")
-_allowed_origins: list[str] = [o.strip() for o in _raw_origins.split(",") if o.strip()] or ["*"]
+_allowed_origins: list[str] = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+# Default deny — require explicit ALLOWED_ORIGINS in deploy; empty = no CORS (same-origin only)
+# For local dev, set ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_allowed_origins,
-    allow_credentials=_allowed_origins != ["*"],
+    allow_credentials=bool(_allowed_origins and _allowed_origins != ["*"]),
     allow_methods=["*"],
     allow_headers=["*"],
 )

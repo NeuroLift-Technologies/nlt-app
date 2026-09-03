@@ -11,10 +11,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/orchestrator/**/*.ts",
-    "src/advocates/20-developer/**/*.ts",
-    "archive/pre-1-20-fullstack-2026-09-03/src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["archive/**", "node_modules/**"]
 }

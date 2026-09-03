@@ -3,10 +3,10 @@
     "document_id": "ORG-DEV-OTOI-1.0.3",
     "repository": {
         "name": "NeuroLift-Technologies/nlt-app",
-        "purpose": "Internal coding agent governance \u2014 TOI-OTOI operational contracts",
-        "mode": "production",
-        "visibility": "private",
-        "audience": "internal-coding-agents"
+        "purpose": "App delivery layer — personalized 1:20 Advocate Runtime (World >> Fusion >> App)",
+        "mode": "development",
+        "visibility": "public",
+        "audience": "public-app-delivery"
     },
     "canonical_contract": "NLT-DEV-OTOI.md",
     "agents_gateway": "AGENTS.md",
