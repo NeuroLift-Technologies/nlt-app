@@ -184,6 +184,15 @@ export default function HomePage() {
         Skip to content
       </a>
       <NavHeader onOpenShortcuts={() => setShortcutsOpen(true)} />
+      <div className="mx-auto mt-16 w-full max-w-6xl px-4 sm:px-6">
+        <a
+          href="/mvp"
+          className="flex items-center justify-between rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-800 hover:bg-brand-100 dark:border-brand-900 dark:bg-brand-950/40 dark:text-brand-200 transition-colors"
+        >
+          <span>NeuroLift — Personal OS v0.1 — World&gt;&gt;Fusion&gt;&gt;App (1:20) — <span className="font-semibold">Try the daily MVP →</span></span>
+          <span className="rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white">/mvp</span>
+        </a>
+      </div>
 
       {/* Hero */}
       <main id="main-content">

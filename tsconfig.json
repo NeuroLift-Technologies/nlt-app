@@ -2,15 +2,16 @@
   "compilerOptions": {
     "target": "es2022",
     "module": "es2022",
-    "lib": ["es2022"],
+    "lib": ["es2022", "dom"],
     "types": ["@cloudflare/workers-types"],
     "moduleResolution": "bundler",
     "strict": true,
     "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["archive/**", "node_modules/**"]
 }

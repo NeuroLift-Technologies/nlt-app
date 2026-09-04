@@ -13,6 +13,9 @@
     "lint": "npm run lint --workspaces --if-present",
     "type-check": "npm run type-check --workspaces --if-present"
   },
+  "dependencies": {
+    "@neurolift-technologies/asfdk": "^0.2.2"
+  },
   "devDependencies": {
     "turbo": "^2.0.3",
     "@cloudflare/workers-types": "^5.20260820.1",

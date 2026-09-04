@@ -1,14 +1,22 @@
 /**
- * nlt-app orchestrator stub — app-only.
+ * nlt-app orchestrator stub — app-only + Personal OS v0.1 (Joshd profile).
  *
  * Full training lives in neurolift-ai-fusion (SessionOrchestrator, FusionEngine).
  * Full world simulation lives in nlt-world-engine (WorldEngineDO, Registry, GridManager).
  * This stub only orchestrates the personalized 1:20 runtime via A2A.
  *
+ * MVP v0.1 Systems: START (TaskKickstart+PlannerPro), TIME (Timely), TOP3 (PlannerPro+EffortAlign)
+ * plus MemoryMate + StayAlert + Hyperfocus Guard/Exit Ramp. See src/orchestrator/classifier.ts.
+ *
  * @see https://github.com/NeuroLift-Technologies/nlt-world-engine
  * @see https://github.com/NeuroLift-Technologies/neurolift-ai-fusion
  * Archived history: archive/pre-1-20-fullstack-2026-09-03/src/
  */
+
+// Personal OS v0.1 — re-export classifier + advocate stubs for A2A wiring
+// TODO: wire to neurolift-ai-fusion via A2A (SessionOrchestrator/FusionEngine) — see classifier.ts
+export { classifyStuckState } from "./classifier";
+export type { AdvocateId, StuckContext } from "./classifier";
 
 // TODO: replace with A2A client to nlt-world-engine and neurolift-ai-fusion.
 // Previous imports like `import { Registry } from "../simulation/..."` were
