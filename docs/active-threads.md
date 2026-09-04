@@ -19,6 +19,7 @@
 | Thread ID | Title | Owner | Agent | Branch | Status | Started |
 |-----------|-------|-------|-------|--------|--------|---------|
 | THREAD-031 | Governance sync: nlt-app to ORG-DEV-OTOI-1.0.3 — 1:20 pipeline identity (World >> Fusion >> App) | Joshua W. Dorsey, Sr. | Muse Spark (governance sync) | feat/governance-sync-1-20 | 🟢 Open | 2026-09-03 |
+| THREAD-032 | MVP v0.1 Personal OS — Start/Time/Top3 + 5 advocates + 4 surfaces for Joshd profile (1:20) — Systems 1 START (TaskKickstart+PlannerPro), 2 TIME (Timely), 3 TOP3 (PlannerPro+EffortAlign) + MemoryMate/StayAlert/Hyperfocus Guard | Joshua W. Dorsey, Sr. | Muse Spark (app) | feat/mvp-joshd-profile-v01 | 🟢 Open | 2026-09-03 |
 | TH-008 | Document PR #43 Cloudflare workspace/config changes | Automation | Cursor Automation | cursor/documentation-automation-system-99aa | 🟡 In Progress | 2026-05-02 |
 
 

@@ -1,0 +1,2 @@
+# src/advocates/04-timely — Python stub (TS is canonical)
+# See README.md and index.ts; runtime via A2A to neurolift-ai-fusion

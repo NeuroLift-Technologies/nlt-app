@@ -17,7 +17,16 @@
 
 // Re-export app orchestrator as the gateway's local interface.
 // The actual WorldEngineDO is NOT here.
-export { AppOrchestrator } from "./orchestrator/index";
+export { AppOrchestrator, classifyStuckState } from "./orchestrator/index";
+export type { AdvocateId, StuckContext } from "./orchestrator/index";
+
+// Personal OS v0.1 — MVP advocates (5 of 1:20) — stubs, wire to A2A (neurolift-ai-fusion)
+// TODO: wire to A2A to neurolift-ai-fusion (FusionEngine/Advocate inference) — see src/orchestrator/classifier.ts
+export * as TaskKickstart from "./advocates/07-taskKickstart/index";
+export * as Timely from "./advocates/04-timely/index";
+export * as PlannerPro from "./advocates/09-plannerPro/index";
+export * as StayAlert from "./advocates/01-stayAlert/index";
+export * as MemoryMate from "./advocates/05-memoryMate/index";
 export * from "./advocates/20-developer/index";
 
 // Placeholder for Wrangler compatibility — not a real Worker.
