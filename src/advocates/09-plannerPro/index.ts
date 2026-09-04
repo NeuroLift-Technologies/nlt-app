@@ -166,6 +166,33 @@ export function effortCheck(
   return { ok: true, reason: "Fits Top 3 budget — not overcommitted." };
 }
 
+/**
+ * Top3 total budget check — warn if sum > 4h (240 min) per ADHD overcommitment profile p.15.
+ * Joshd's strength when interested → overestimates capacity; this guard prevents Top3 from becoming "Top 10".
+ * Governance: provenance check at top.
+ */
+export function checkTop3Budget(top3: TaskCandidate[], budgetMin: number = 240): EffortCheck {
+  const safe = provenanceOk(top3 as unknown as TaskCandidate);
+  void safe;
+  const total = top3.reduce((s, t) => s + (t.time_min || 0), 0);
+  const totalEffort = top3.reduce((s, t) => s + (t.effort || 0), 0);
+  if (total > budgetMin) {
+    return {
+      ok: false,
+      reason: `Overcommitted: Top 3 total ${total}min > ${budgetMin}min (4h) budget — ADHD overwhelm risk. Total effort ${totalEffort}/15.`,
+      suggested: `Defer one task to Later or shrink a task to 2-min micro-step (Top3View → [Defer]).`,
+    };
+  }
+  if (totalEffort > 12) {
+    return {
+      ok: false,
+      reason: `High total effort ${totalEffort}/15 for Top 3 — risk of decision fatigue / initiation freeze.`,
+      suggested: `Ensure at least one Top3 is low-effort / high-interest to fuel activation.`,
+    };
+  }
+  return { ok: true, reason: `Top 3 fits budget: ${total}min / ${budgetMin}min, effort ${totalEffort}.` };
+}
+
 export const advocateMeta = {
   id: "09-plannerPro" as const,
   role: "Top 3 — Prioritization & EffortAlign",

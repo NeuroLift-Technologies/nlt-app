@@ -84,16 +84,17 @@ function classifyHeuristic(input: string, context: StuckContext = {}): AdvocateI
   }
 
   // Keyword routing — order matters (most specific first)
+  // Use \w* suffix to catch overwhelmed/overwhelming, boredom, perfectionism, etc.
   if (/\b(remember|idea|dump|later|don't forget|capture|note to self|brain dump)\b/.test(text)) {
     return "05-memoryMate";
   }
-  if (/\b(bored|boring|uninterest|tedious|dry|monotonous|can't focus|distract)\b/.test(text)) {
+  if (/\b(bored\w*|boring|uninterest\w*|tedious|dry|monotonous|can't focus|distract\w*)\b/.test(text)) {
     return "01-stayAlert";
   }
-  if (/\b(time|late|deadline|meeting|due|estimate|how long|running out|time blind|transition)\b/.test(text)) {
+  if (/\b(time\w*|late|deadline|meeting|due|estimate\w*|how long|running out|time blind|transition)\b/.test(text)) {
     return "04-timely";
   }
-  if (/\b(overwhelm|too many|prioritize|priority|which one|choose|decide|perfection|stuck choosing|list too long)\b/.test(text)) {
+  if (/\b(overwhelm\w*|too many|prioritiz\w*|priority|which one|choose|decide|perfection\w*|perfect\w*|properly|stuck choosing|list too long)\b/.test(text)) {
     return "09-plannerPro";
   }
   // Default: Activation Bridge — biggest #1 for Joshd is task initiation

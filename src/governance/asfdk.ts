@@ -152,7 +152,7 @@ async function tryLiveAssessText(
     // does not require the package to be installed for app-only stub CI.
     // When @neurolift-technologies/asfdk is installed, swap stub for live.
     // @ts-ignore - optional peer, may not be installed in app-only mode
-    const mod: unknown = await import("@neurolift-technologies/asfdk" as string).catch(() => null);
+    const mod: unknown = await import(/* webpackIgnore: true */ "@neurolift-technologies/asfdk" as string).catch(() => null);
     if (!(mod as { createFoundation?: unknown })?.createFoundation) return null;
     // In Pi runtime the harness holds a singleton; app stub delegates once wiring exists.
     return null; // fall through to stub until app has a shared harness singleton
@@ -164,7 +164,7 @@ async function tryLiveAssessText(
 async function tryLiveStatus(): Promise<AsfdkStatus | null> {
   try {
     // @ts-ignore - optional peer
-    const mod: unknown = await import("@neurolift-technologies/asfdk" as string).catch(() => null);
+    const mod: unknown = await import(/* webpackIgnore: true */ "@neurolift-technologies/asfdk" as string).catch(() => null);
     if (!mod) return null;
     return null;
   } catch {
@@ -277,7 +277,7 @@ export async function asfdk_review_tool_call(params: {
   // Try live policy if available (optional peer, stub otherwise)
   try {
     // @ts-ignore - optional peer
-    const mod: unknown = await import("@neurolift-technologies/asfdk-harness/policy.js" as string).catch(() => null);
+    const mod: unknown = await import(/* webpackIgnore: true */ "@neurolift-technologies/asfdk-harness/policy.js" as string).catch(() => null);
     void mod;
   } catch {
     // fall through to stub

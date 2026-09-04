@@ -87,6 +87,80 @@ function createMicroStep(next_action: string): MicroStep {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Heuristic micro-step templates — no LLM, concrete 2-min actions
+// Maps intent keywords to tiny physical first moves (ADHD: friction → start)
+// ---------------------------------------------------------------------------
+
+export function generateMicroSteps(intent: string): string[] {
+  const raw = (intent || "").trim().toLowerCase();
+  const clean = (intent || "start").trim().slice(0, 80);
+  if (/\bclean|house|tidy|organize|declutter|room\b/.test(raw)) {
+    return [
+      `Pick up 5 pieces of trash / clutter for "${clean}" (2 min)`,
+      `Put dishes in sink / clear one surface for "${clean}" (2 min)`,
+      `Take out trash or reset one area — "${clean}" (2 min)`,
+      `Wipe one surface clean for "${clean}" (2 min)`,
+    ];
+  }
+  if (/\bemail|message|inbox|reply\b/.test(raw)) {
+    return [
+      `Open inbox + pick ONE email for "${clean}" (2 min)`,
+      `Write ugly first sentence for that email — "${clean}" (2 min)`,
+      `Finish that one email draft and send/save (2 min)`,
+    ];
+  }
+  if (/\breport|doc|write|paper|essay|draft|qbr\b/.test(raw)) {
+    return [
+      `Open doc + write title + one bullet for "${clean}" (2 min)`,
+      `Draft one ugly paragraph for "${clean}" — no editing (2 min)`,
+      `Add next bullet / paragraph for "${clean}" (2 min)`,
+      `Reread + fix one sentence for "${clean}" (2 min)`,
+    ];
+  }
+  if (/\bcode|program|build|feature|bug|commit|pr\b/.test(raw)) {
+    return [
+      `Open editor + read one function for "${clean}" (2 min)`,
+      `Write one small failing test or comment for "${clean}" (2 min)`,
+      `Implement smallest change for "${clean}" (2 min)`,
+    ];
+  }
+  if (/\bstudy|learn|read|research|course\b/.test(raw)) {
+    return [
+      `Open book/page + read one paragraph for "${clean}" (2 min)`,
+      `Write one question about "${clean}" (2 min)`,
+      `Explain that paragraph in one sentence for "${clean}" (2 min)`,
+    ];
+  }
+  if (/\bexercise|workout|run|walk|gym\b/.test(raw)) {
+    return [
+      `Put on shoes + stretch 30 sec for "${clean}" (2 min)`,
+      `Do 10 jumping jacks or walk in place for "${clean}" (2 min)`,
+      `Start main exercise for "${clean}" — just 2 min`,
+    ];
+  }
+  if (/\bcall|meeting|schedule|plan\b/.test(raw)) {
+    return [
+      `Open calendar/phone + find contact for "${clean}" (2 min)`,
+      `Draft one-line agenda for "${clean}" (2 min)`,
+      `Send invite or make call for "${clean}" (2 min)`,
+    ];
+  }
+  // generic fallback — still concrete verb first
+  return [
+    `Open + do first 2-min touch: "${clean}" — just open the doc/tab and write one ugly sentence`,
+    `Continue "${clean}" — next 2-min slice: add one more sentence / action`,
+    `Keep going on "${clean}" — one more tiny touch (2 min)`,
+  ];
+}
+
+function pickMicroStep(intent: string, stepIndex: number = 0): string {
+  const steps = generateMicroSteps(intent);
+  const idx = Math.max(0, Math.min(stepIndex, steps.length - 1));
+  // cycle if beyond length
+  return steps[idx % steps.length];
+}
+
 /**
  * Get next micro-step for an intent — Activation Bridge (ASFDK-governed).
  *
@@ -96,9 +170,10 @@ function createMicroStep(next_action: string): MicroStep {
  * 3. If !safe → return safe fallback step + escalate, do not proceed with normal step
  *
  * @param intent - raw user intent (e.g. "write QBR report")
+ * @param stepIndex - optional sequence index for Done→next step (ADHD: tiny wins chain)
  * @returns MicroStep with reclassify hook (async — governance boundary)
  */
-export async function getNextMicroStep(intent: string): Promise<MicroStep> {
+export async function getNextMicroStep(intent: string, stepIndex: number = 0): Promise<MicroStep> {
   const clean = (intent || "start").trim().slice(0, 120) || "start";
 
   // 1) Assess intent — Solidarity Framework (RRT/Sleepwalker/OTOI)
@@ -126,16 +201,20 @@ export async function getNextMicroStep(intent: string): Promise<MicroStep> {
   // 2) Route agent_action through governance before returning
   await asfdk_process_interaction({
     interactionType: "agent_action",
-    data: { action: "getNextMicroStep", intent: clean, duration_min: 2, agency: "recommendation_only" },
+    data: { action: "getNextMicroStep", intent: clean, stepIndex, duration_min: 2, agency: "recommendation_only" },
     context: { source: "advocate/07-taskKickstart", pipeline: "World>>Fusion>>App" },
   }).catch(() => undefined);
 
-  // 3) Shrink to micro-step: open + first physical action (human_led — recommendation only)
-  const next_action = `Open + do first 2-min touch: ${clean} — just open the doc/tab and write one ugly sentence`;
+  // 3) Shrink to micro-step via template (heuristic, no LLM) — concrete verb first
+  const next_action = pickMicroStep(clean, stepIndex);
+  const steps = generateMicroSteps(clean);
+  const why = stepIndex === 0
+    ? "Activation Bridge: bridges intention→initiation without lecture; tiny win beats perfect plan."
+    : `Step ${stepIndex + 1}/${steps.length}: tiny win chain — keeps momentum without overwhelm.`;
   return {
     next_action,
     duration_min: 2,
-    why: "Activation Bridge: bridges intention→initiation without lecture; tiny win beats perfect plan.",
+    why,
     id: `ms_${Math.random().toString(36).slice(2, 8)}`,
     reclassify: makeReclassify(next_action),
   };
@@ -145,7 +224,7 @@ export async function getNextMicroStep(intent: string): Promise<MicroStep> {
  * Synchronous fallback — preserves original heuristic with sync governance stub.
  * Used by surfaces/tests that cannot await. Production should prefer async getNextMicroStep().
  */
-export function getNextMicroStepSync(intent: string): MicroStep {
+export function getNextMicroStepSync(intent: string, stepIndex: number = 0): MicroStep {
   const clean = (intent || "start").trim().slice(0, 120) || "start";
   try {
     const a = asfdk_assess_text_sync({ text: clean, context: { source: "user_message", advocate: "07-taskKickstart" } });
@@ -160,17 +239,21 @@ export function getNextMicroStepSync(intent: string): MicroStep {
     }
     asfdk_process_interaction_sync({
       interactionType: "agent_action",
-      data: { action: "getNextMicroStepSync", intent: clean },
+      data: { action: "getNextMicroStepSync", intent: clean, stepIndex },
       context: { source: "advocate/07-taskKickstart" },
     });
   } catch {
     // gov failed — fall through
   }
-  const next_action = `Open + do first 2-min touch: ${clean} — just open the doc/tab and write one ugly sentence`;
+  const next_action = pickMicroStep(clean, stepIndex);
+  const steps = generateMicroSteps(clean);
+  const why = stepIndex === 0
+    ? "Activation Bridge: bridges intention→initiation without lecture; tiny win beats perfect plan."
+    : `Step ${stepIndex + 1}/${steps.length}: tiny win chain — keeps momentum without overwhelm.`;
   return {
     next_action,
     duration_min: 2,
-    why: "Activation Bridge: bridges intention→initiation without lecture; tiny win beats perfect plan.",
+    why,
     id: `ms_${Math.random().toString(36).slice(2, 8)}`,
     reclassify: makeReclassify(next_action),
   };

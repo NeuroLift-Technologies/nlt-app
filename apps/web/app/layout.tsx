@@ -54,7 +54,9 @@ export default function RootLayout({
           <nav className="border-b border-border bg-card px-6 py-3 flex flex-wrap items-center gap-4">
             <span className="font-bold text-brand-600 text-lg">NeuroLift</span>
             <a href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Home</a>
+            <a href="/mvp" className="text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors">Personal OS v0.1 — World&gt;&gt;Fusion&gt;&gt;App (1:20)</a>
             <a href="/pairs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pair Atlas</a>
+            <a href="/aide" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Aide</a>
             <a href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Dashboard</a>
             <a href="/session/new" className="text-sm text-muted-foreground hover:text-foreground transition-colors">New Session</a>
             <a href="/simulation-lab" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Simulation Lab</a>

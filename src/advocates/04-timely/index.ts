@@ -112,11 +112,12 @@ export function getLiveRemaining(startedAt: number, estimated_min: number, now: 
 /**
  * Create transition buffer — explicit detach window for "brain attached to previous thing".
  * Joshd's time blindness needs a named buffer between tasks, not instant switch.
+ * MVP spec: "Switching tasks" → 2-min buffer with breathing/grounding text (120s).
  * ASFDK provenance check at top.
  * @param nextTask - what we're transitioning to
- * @param buffer_min - default 5 minutes
+ * @param buffer_min - default 2 minutes (120s per MVP spec)
  */
-export function createTransitionBuffer(nextTask: string, buffer_min: number = 5): TransitionBuffer {
+export function createTransitionBuffer(nextTask: string, buffer_min: number = 2): TransitionBuffer {
   provenanceCheck("createTransitionBuffer", nextTask);
   // Also assess nextTask text for any unsafe content before creating buffer
   try {

@@ -43,6 +43,7 @@ const STRATEGY_FRAMES = [
   "strategy: what's the clever 20% that unlocks 80%?",
   "creative: how would you make this delightfully weird?",
   "systems: what tiny system would make this run itself next time?",
+  "speed run: do it in 5 min, beat the clock!",
 ];
 
 /**
@@ -94,8 +95,12 @@ export function injectInterest(task: string): ReframedTask {
     // gov failure — degrade gracefully, still provide reframe (no block)
   }
 
-  const frame = STRATEGY_FRAMES[hashString(clean) % STRATEGY_FRAMES.length];
   const lower = clean.toLowerCase();
+  // ADHD boredom → speed run is most potent per MVP spec
+  const isBoredContext = /bored|boring|tedious|dry|monotonous|can't focus|distract/.test(lower);
+  const frame = isBoredContext
+    ? `speed run: "${clean.slice(0, 40)}" in 5 min — beat the clock!`
+    : STRATEGY_FRAMES[hashString(clean) % STRATEGY_FRAMES.length];
   let hook: string;
   if (lower.includes("report") || lower.includes("doc") || lower.includes("write")) {
     hook = "Strategic thinking — craft the one insight that makes the reader's decision obvious.";
@@ -103,14 +108,19 @@ export function injectInterest(task: string): ReframedTask {
     hook = "Systems puzzle — design the 5-minute system future-you will thank.";
   } else if (lower.includes("email") || lower.includes("message")) {
     hook = "Problem-solving — what's the clear ask that unblocks everyone in one line?";
+  } else if (isBoredContext) {
+    hook = "Interest injection: Speed run — novelty + time pressure taps hyperfocus.";
   } else {
     hook = "Creativity + hyperfocus fuel — turn the boring part into a curiosity experiment.";
   }
+  const starter = isBoredContext
+    ? `Speed run (2 min): set 5-min timer and race "${clean.slice(0, 40)}" — beat clock, not perfection.`
+    : `2-min scan: what puzzles you about "${clean.slice(0, 50)}"? Write one question, not an answer.`;
   return {
     original: clean,
     reframed: `${clean} — ${frame}`,
     hook,
-    starter: `2-min scan: what puzzles you about "${clean.slice(0, 50)}"? Write one question, not an answer.`,
+    starter,
   };
 }
 

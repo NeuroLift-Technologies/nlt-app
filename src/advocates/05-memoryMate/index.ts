@@ -54,6 +54,57 @@ const memory: DumpEntry[] = [];
 // This stub base64-encodes at rest and decodes on read — never logs plaintext.
 const atRest: Map<string, string> = new Map(); // id → b64(text)
 
+// MVP v0.1 local persistence — key prefix nlt-mvp: (survives refresh, no external API)
+const STORAGE_KEY = "nlt-mvp:dumps";
+const STORAGE_AT_REST = "nlt-mvp:dumps:atRest";
+
+function isBrowser(): boolean {
+  return typeof window !== "undefined" && typeof localStorage !== "undefined";
+}
+
+function persistToStorage(): void {
+  if (!isBrowser()) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(memory));
+    const atRestObj: Record<string, string> = {};
+    atRest.forEach((v, k) => { atRestObj[k] = v; });
+    localStorage.setItem(STORAGE_AT_REST, JSON.stringify(atRestObj));
+  } catch {
+    // quota or privacy mode — degrade gracefully (in-memory still works)
+  }
+}
+
+function hydrateFromStorage(): void {
+  if (!isBrowser()) return;
+  if (memory.length > 0) return; // already hydrated this session
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const atRestRaw = localStorage.getItem(STORAGE_AT_REST);
+    if (raw) {
+      const parsed: DumpEntry[] = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length) {
+        memory.push(...parsed);
+      }
+    }
+    if (atRestRaw) {
+      const obj: Record<string, string> = JSON.parse(atRestRaw);
+      Object.entries(obj).forEach(([k, v]) => { atRest.set(k, v); });
+    }
+    // Ensure atRest map is populated for any memory entries that lack it (legacy)
+    memory.forEach((e) => {
+      if (!atRest.has(e.id)) atRest.set(e.id, encryptAtRest(e.text));
+    });
+  } catch {
+    // corrupt storage — clear and start fresh
+    try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_AT_REST); } catch { /* ignore */ }
+  }
+}
+
+// Auto-hydrate on module load in browser (hydrates dumps for DumpBar)
+if (isBrowser()) {
+  try { hydrateFromStorage(); } catch { /* ignore */ }
+}
+
 function encryptAtRest(text: string): string {
   try {
     return Buffer.from(text, "utf-8").toString("base64");
@@ -138,6 +189,7 @@ export function captureDump(idea: string, source: DumpEntry["source"] = "manual"
   // 2) Encrypted at rest — store b64, keep plaintext only in memory handle for UX
   atRest.set(entry.id, encryptAtRest(textToStore));
   memory.push(entry);
+  persistToStorage();
   return entry;
 }
 
@@ -152,6 +204,9 @@ export function listDumps(limit: number = 20): DumpEntry[] {
   } catch {
     // ignore
   }
+  if (isBrowser() && memory.length === 0) {
+    try { hydrateFromStorage(); } catch { /* ignore */ }
+  }
   return [...memory]
     .reverse()
     .slice(0, limit)
@@ -162,6 +217,14 @@ export function listDumps(limit: number = 20): DumpEntry[] {
         return b64 ? decryptAtRest(b64) : e.text;
       })(),
     }));
+}
+
+/** Force re-hydrate from localStorage (called by MVP page on mount) */
+export function hydrateDumps(): DumpEntry[] {
+  if (isBrowser()) {
+    try { hydrateFromStorage(); } catch { /* ignore */ }
+  }
+  return listDumps(20);
 }
 
 /** Clear dumps (e.g. after PlannerPro triage) — respects TOI retention */
@@ -178,6 +241,9 @@ export function clearDumps(): number {
   const n = memory.length;
   memory.length = 0;
   atRest.clear();
+  if (isBrowser()) {
+    try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_AT_REST); } catch { /* ignore */ }
+  }
   return n;
 }
 
