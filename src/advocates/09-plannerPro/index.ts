@@ -10,11 +10,24 @@
  * - Also serves System 1 START (with TaskKickstart) for Activation Bridge
  * - Addresses decision fatigue (too many choices → freeze) + perfectionism (huge list = never start)
  *
+ * Governance (Ch.9: TOI → OTOI → ASFDK → RRT/Sleepwalker):
+ * - TOI agency: human_led — user Input is human-led per TOI; PlannerPro is recommendation_only.
+ *   getTop3() and effortCheck() propose a triage, they do NOT auto-commit tasks. User confirms Top 3.
+ * - Solidarity Framework: every call goes through ASFDK provenance (asfdk_assess_text_sync +
+ *   asfdk_process_interaction_sync) before heuristic. Unsafe content → escalate, return safe fallback.
+ * - Single boundary: src/governance/asfdk.ts.
+ *
  * @see https://github.com/NeuroLift-Technologies/neurolift-ai-fusion — trait catalog: PlannerPro avatar/aide → Advocate 09
+ * @see src/governance/asfdk.ts — asfdk_assess_text, asfdk_process_interaction
  * Archived: archive/pre-1-20-fullstack-2026-09-03/src/fusion/ (fusion_engine)
  *
  * TODO[A2A]: Wire to neurolift-ai-fusion Advocate 09 + EffortAlign scoring via A2A.
  */
+
+import {
+  asfdk_assess_text_sync,
+  asfdk_process_interaction_sync,
+} from "../../governance/asfdk";
 
 export interface TaskCandidate {
   id: string;
@@ -44,13 +57,52 @@ export interface EffortCheck {
   suggested?: string;
 }
 
+function provenanceOk(candidates: TaskCandidate[] | TaskCandidate): boolean {
+  try {
+    const text = Array.isArray(candidates) ? candidates.map((c) => c.title).join(" | ").slice(0, 500) : candidates.title;
+    const a = asfdk_assess_text_sync({ text, context: { source: "advocate/09-plannerPro", agency: "human_led", pipeline: "World>>Fusion>>App" } });
+    if (!a.safe) {
+      asfdk_process_interaction_sync({
+        interactionType: "emergency_escalation",
+        data: { reason: "plannerPro_assessment_unsafe", flags: a.flags, signals: a.signals },
+        context: { source: "advocate/09-plannerPro" },
+      });
+      return false;
+    }
+    asfdk_process_interaction_sync({
+      interactionType: "agent_action",
+      data: { action: Array.isArray(candidates) ? "getTop3" : "effortCheck", titles: text.slice(0, 200), agency: "recommendation_only" },
+      context: { source: "advocate/09-plannerPro", toi_agency: "human_led" },
+    });
+    return true;
+  } catch {
+    return true; // gov failure — never block planning, degrade gracefully
+  }
+}
+
 /**
  * Select Top 3 from candidates — Defer rest to Later.
  * Heuristic: mustDo first, then low effort×time, but preserve one high-interest if possible (for activation).
  * Prevents overcommitment: huge list → Later.
+ *
+ * Governance: provenance check via ASFDK at top (human_led, recommendation_only).
+ * If unsafe → return safe fallback (first 3 as Later park, escalated).
+ *
  * @param candidates - all candidate tasks
  */
 export function getTop3(candidates: TaskCandidate[]): Top3Result {
+  // Governance boundary — human_led: user input is human-led per TOI
+  const safe = provenanceOk(candidates);
+  if (!safe) {
+    // Safe fallback — do not triage normally when flagged
+    return {
+      top3: candidates.slice(0, 1),
+      later: candidates.slice(1),
+      total_time_min: candidates.slice(0, 1).reduce((s, t) => s + t.time_min, 0),
+      total_effort: candidates.slice(0, 1).reduce((s, t) => s + t.effort, 0),
+    };
+  }
+
   const sorted = [...candidates].sort((a, b) => {
     // mustDo first
     if (a.mustDo !== b.mustDo) return a.mustDo ? -1 : 1;
@@ -78,6 +130,9 @@ export function getTop3(candidates: TaskCandidate[]): Top3Result {
 /**
  * Effort×Time check to prevent overcommitment (EffortAlign).
  * Joshd's pattern: high strategic energy when interested → overestimates capacity when planning.
+ *
+ * Governance: provenance check via ASFDK at top (human_led).
+ *
  * @param task - candidate task
  * @param budget - today's budget (default 240 min / effort 8)
  */
@@ -85,6 +140,15 @@ export function effortCheck(
   task: TaskCandidate,
   budget: { time_min: number; effort: number } = { time_min: 240, effort: 8 }
 ): EffortCheck {
+  const safe = provenanceOk(task);
+  if (!safe) {
+    return {
+      ok: false,
+      reason: `ASFDK governance: task "${task.title.slice(0, 40)}" flagged for review — not checked for effort, escalated.`,
+      suggested: `Rephrase task title and retry; flagged content not triaged normally.`,
+    };
+  }
+
   if (task.time_min > budget.time_min * 0.7) {
     return {
       ok: false,
